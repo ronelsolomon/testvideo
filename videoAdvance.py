@@ -24,7 +24,7 @@ Dependencies:
     ffmpeg must be on PATH (https://ffmpeg.org) for embedded subtitle extraction
 
 Optional LLM (best quality, fully local):
-    ollama pull llama3.2   (from https://ollama.com)
+    ollama pull llama3.1:8b   (from https://ollama.com)
 """
 
 import os
@@ -573,7 +573,7 @@ SCENE TEXT:
 """
 
 
-def call_ollama(scene_text, subtitle_context, model="llama3.2"):
+def call_ollama(scene_text, subtitle_context, model="llama3.1:8b"):
     try:
         import requests
         resp = requests.post(
@@ -600,14 +600,14 @@ def nlp_fallback(scene_text, subtitle_context):
             "what_nolan_sees": "NLP scan — install Ollama for Nolan's full vision.",
             **{k: {"score": round(v["weighted"]*10,1), "note": v["desc"]} for k,v in ns.items()},
             "nolan_improvements": [{"problem": "LLM needed for deep analysis",
-                "solution": "ollama pull llama3.2  then re-run", "example_rewrite": ""}],
+                "solution": "ollama pull llama3.1:8b  then re-run", "example_rewrite": ""}],
             "nolan_overall": "Run with Ollama for Nolan's full verdict."
         },
         "shakespeare_analysis": {
             "what_shakespeare_sees": f"Iambic score: {round(measure_iambic(scene_text),2)}",
             **{k: {"score": round(v["weighted"]*10,1), "note": v["desc"]} for k,v in ss.items()},
             "shakespeare_improvements": [{"problem": "LLM needed for poetic analysis",
-                "solution": "ollama pull llama3.2  then re-run", "example_rewrite": ""}],
+                "solution": "ollama pull llama3.1:8b  then re-run", "example_rewrite": ""}],
             "soliloquy": "To speak or stay silent — that is the question.\nFor in the silence lives all that we dare not name.",
             "shakespeare_overall": "Run with Ollama for the Bard's full verdict."
         },
@@ -623,7 +623,7 @@ def nlp_fallback(scene_text, subtitle_context):
         "combined_verdict": {
             "overall_score": 5,
             "diagnosis": "NLP fallback — install Ollama for full analysis",
-            "the_rewrite": "Install Ollama: ollama pull llama3.2, then re-run.",
+            "the_rewrite": "Install Ollama: ollama pull llama3.1:8b, then re-run.",
             "what_to_measure_next": [
                 "Temporal layering — does the past haunt the present moment?",
                 "Iambic heartbeat — does dialogue carry natural rhythm?",
@@ -793,8 +793,8 @@ Examples:
     parser.add_argument("--whisper-model", default="base",
                         choices=["tiny","base","small","medium","large"],
                         help="Whisper model (default: base). Use 'small' or 'medium' for better accuracy.")
-    parser.add_argument("--ollama-model", default="llama3.2",
-                        help="Ollama model for analysis (default: llama3.2)")
+    parser.add_argument("--ollama-model", default="llama3.1:8b",
+                        help="Ollama model for analysis (default: llama3.1:8b)")
     parser.add_argument("--scenes", type=int, default=3,
                         help="Max number of scenes to analyze (default: 3)")
     parser.add_argument("--scene-gap", type=float, default=5.0,
